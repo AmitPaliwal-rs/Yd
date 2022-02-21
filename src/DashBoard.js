@@ -1,9 +1,4 @@
-import {
-  Paper,
-  Typography,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { Paper, Typography, Select, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import BoardData from "./BoardData";
 import ChartData from "./ChartData";
@@ -12,8 +7,8 @@ import Navbar from "./Navbar";
 const DashBoard = () => {
   const [city, setCity] = useState(2);
   const [days, setDays] = useState(14);
-  const [bcity , setBCity] = useState(2);
-  const [bdays , setBDays] = useState(14);
+  const [bcity, setBCity] = useState(2);
+  const [bdays, setBDays] = useState(14);
 
   const onSelectCity = (e) => {
     let val = e.target.value;
@@ -34,9 +29,6 @@ const DashBoard = () => {
     let day = e.target.value;
     setBDays(day);
   };
-
-  
-
 
   return (
     <React.Fragment>
@@ -195,7 +187,7 @@ const DashBoard = () => {
                 <MenuItem value={60}>60 days</MenuItem>
               </Select>
             </Paper>
-            <ChartData detail="Booking"  bookingDays= {bdays} />
+            <ChartData detail="Booking" bookingDays={bdays} />
           </Paper>
         </Paper>
       </Paper>

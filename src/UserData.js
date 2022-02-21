@@ -1,153 +1,52 @@
 import { Paper } from "@mui/material";
 import React from "react";
+import { useState , useEffect } from "react";
 
-const Cart = [
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-  {
-    Name: "Rakesh",
-    Contact: "8279991133",
-    RDate: "04/05/2021",
-    TotalOrder: "30",
-    Denied: "03",
-    Cancle: "02",
-    Total: "Rs.3012",
-    Average: "4.0",
-    Flagged: "12",
-  },
-];
+
 
 const UserData = () => {
+  const token = localStorage.getItem("Token");
+  const linkOfUser = "http://yd-dev-elb-841236067.ap-south-1.elb.amazonaws.com";
+  const UserDetail = "api/store-manager/dashboard/user/details";
+  const [Cart , setCart] = useState(null);
+
+  useEffect( ()=> {
+    const loadData = async () => {
+      let response = await fetch(`${linkOfUser}/${UserDetail}` , {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: token, 
+        },
+      });
+      const res = await response.json();
+      setCart(res);
+    }
+    loadData();
+  } ,[token]);
+
+  let item = Cart?.map(x => {
+    let now = new Date(x.regDate);
+    if(!!x.regDate){
+      let month = now.getMonth() + 1;
+      let dt = now.getDate();
+      let year = now.getFullYear();
+      if(!! month || !!dt || !!year){
+        x.regDate = `${dt}/${month}/${year} `;
+      }
+      else{
+        x.regDate = "";
+      }
+      
+    }
+    
+    return x;
+  }) // this ? mark is used to check is previuos value is null or not
+  console.log(item);
+  
+
+
   return (
     <Paper>
       <table style={{ width: "100%", borderCollapse: "collapse",fontSize:"22px"  }}>
@@ -253,8 +152,9 @@ const UserData = () => {
             </th>
           </tr>
         </thead>
+
         <tbody>
-          {Cart.map((item) => {
+          {item?.map((item) => {
             return (
               <tr>
                 <td
@@ -266,7 +166,7 @@ const UserData = () => {
                     color: "#F88A12",
                   }}
                 >
-                  {item.Name}
+                  {item.name}
                 </td>
                 <td
                   style={{
@@ -277,7 +177,7 @@ const UserData = () => {
                     color: "#777777",
                   }}
                 >
-                  {item.Contact}
+                  {item.contact}
                 </td>
                 <td
                   style={{
@@ -288,7 +188,7 @@ const UserData = () => {
                     color: "#777777",
                   }}
                 >
-                  {item.RDate}
+                  {item.regDate}
                 </td>
                 <td
                   style={{
@@ -299,7 +199,7 @@ const UserData = () => {
                     color: "#F88A12",
                   }}
                 >
-                  {item.TotalOrder}
+                  {item.totalOrders}
                 </td>
                 <td
                   style={{
@@ -310,7 +210,7 @@ const UserData = () => {
                     color: "#FF0000",
                   }}
                 >
-                  {item.Denied}
+                  {item.deniedOrders}
                 </td>
                 <td
                   style={{
@@ -321,7 +221,7 @@ const UserData = () => {
                     color: "#4612F8"
                   }}
                 >
-                  {item.Cancle}
+                  {item.canceledOrders}
                 </td>
                 <td
                   style={{
@@ -332,7 +232,7 @@ const UserData = () => {
                     color: "#21F812",
                   }}
                 >
-                  {item.Total}
+                  {item.totalAmount}
                 </td>
                 <td
                   style={{
@@ -343,7 +243,7 @@ const UserData = () => {
                     color: "#777777",
                   }}
                 >
-                  {item.Average}
+                  {item.avgRating}
                 </td>
                 <td
                   style={{
@@ -354,7 +254,7 @@ const UserData = () => {
                     color: "#777777",
                   }}
                 >
-                  {item.Flagged}
+                  {item.flagCount}
                 </td>
               </tr>
             );

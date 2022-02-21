@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Navbar from "./Navbar";
 import { Paper, Tab, Tabs } from "@mui/material";
 import UserData from "./UserData";
+import { useNavigate } from "react-router";
+import CartdeliveryData from './CartDeliveryData';
 
 const PersonData = () => {
   const [userChoice, setUserChoice] = useState("Cart");
@@ -23,6 +25,13 @@ const PersonData = () => {
     console.log(e);
     setValue(val);
   };
+
+  // let location = useLocation();
+  const navigate = useNavigate();
+
+  const backNavigation = () => {
+    navigate("/dashboard" , {replace :true});
+  }
 
   return (
     <React.Fragment>
@@ -55,8 +64,9 @@ const PersonData = () => {
               color: "#777777",
             }}
           >
-            <p>Back</p>
-            <p style={{ color: "#F88A12" }}>+ Add New Cart Person</p>
+            <p style={{ color: "#777777" ,cursor: "pointer"}} onClick={backNavigation} >Back</p>
+
+            <p style={{ color: "#F88A12" , cursor: "pointer"}}>+ Add New Cart Person</p>
           </Paper>
 
           <Paper elevation={1}>
@@ -74,7 +84,7 @@ const PersonData = () => {
                   minHeight: "110vh",
                 }}
               >
-                <UserData userChoice={userChoice} />
+                <CartdeliveryData staffMember="cart-boy"/>
               </Paper>
             </TabPanel>
             <TabPanel value={value} index={1} onClick={onClickDelivery} >
@@ -84,7 +94,7 @@ const PersonData = () => {
                   minHeight: "110vh",
                 }}
               >
-                <UserData userChoice={userChoice} />
+                <CartdeliveryData staffMember="delivery-boy"/>
               </Paper>
             </TabPanel>
             <TabPanel value={value} index={2} onClick={onClickUser} >
@@ -103,6 +113,8 @@ const PersonData = () => {
     </React.Fragment>
   );
 };
+
+
 
 function TabPanel(props) {
   const { children, value, index } = props;

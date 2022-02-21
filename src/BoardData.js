@@ -6,7 +6,9 @@ import {
   Typography,
   Grid,
   Button,
+  Link,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const data = [
   {
@@ -14,18 +16,21 @@ const data = [
     tag: "Total Cart Person",
     number: "12",
     details: true,
+    URL: "cart-boy"
   },
   {
     id: "deliveryBoyCount",
     tag: "Total Delivery Boy",
     number: "23",
     details: true,
+    URL: ""
   },
   {
     id: "userCount",
     tag: "Total User",
     number: "1234",
     details: true,
+    URL: ""
   },
   {
     id: "unassignedOrders",
@@ -71,15 +76,16 @@ const data = [
   },
 ];
 
-const BoardData = () => {
+const BoardData = ({staff}) => {
   // const [loading , setLoading] = useState(false);
   const [temp, setTemp] = useState([]);
   const [Data, setData] = useState(data);
+  const navigate = useNavigate();
+  const stafftype = staff;
 
   useEffect(() => {
     const token = localStorage.getItem("Token");
     const loadData = async () => {
-      // setLoading(true);
       let response = await fetch(
         "http://yd-dev-elb-841236067.ap-south-1.elb.amazonaws.com/api/store-manager/dashboard/stats",
         {
@@ -91,10 +97,8 @@ const BoardData = () => {
           },
         }
       );
-      console.log(response);
       const res = await response.json();
       setTemp(res);
-      // setLoading(false);
     };
 
     loadData();
@@ -108,12 +112,16 @@ const BoardData = () => {
         }
       }
     });
-    console.log(flag);
     setData(flag);
   }, [temp]);
 
   for (const prop in temp) {
     console.log(prop);
+  }
+
+  const OnButtonClick = (e, item)=> {
+    console.log(item.URL);
+    navigate(`/dashboard/persondata/${item.URL}` , {replace :true});
   }
 
   return (
@@ -181,7 +189,8 @@ const BoardData = () => {
                 </CardContent>
               </Card>
               {item.details ? (
-                <Button
+                
+                <Button value={item.id} onClick={(e)=>{OnButtonClick(e, item)}}
                   variant="contained"
                   style={{
                     position: "realtive",
@@ -193,8 +202,11 @@ const BoardData = () => {
                       "transparent linear-gradient(180deg, rgba(248, 138, 18, 1) 0%, rgba(205, 45, 5, 1) 100%) 0% 0% no-repeat padding-box",
                   }}
                 >
+                  <Link to={`/dashboard/persondata/${staff}`} >
                   View Details
+                  </Link>
                 </Button>
+                
               ) : (
                 ""
               )}
